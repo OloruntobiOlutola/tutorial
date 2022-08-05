@@ -2,8 +2,8 @@ const express = require("express");
 
 const app = express();
 app.use(express.json());
-// app.METHOD(PATH, HANDLER)
 
+// app.METHOD(PATH, HANDLER)
 app.get("/hello", (req, res) => {
   console.log("Hello");
   res.send("Hello");
