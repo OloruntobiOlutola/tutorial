@@ -1,5 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const dotenv = require("dotenv");
+dotenv.config({ path: "./config.env" });
 const Student = require("./model/student-model");
 
 const app = express();
@@ -7,10 +9,13 @@ const app = express();
 // middleware
 app.use(express.json());
 
+const mongodbUrl = process.env.DB_URL.replace(
+  "<password>",
+  process.env.DB_PASSWORD
+);
+
 mongoose
-  .connect(
-    "mongodb+srv://Paul:password1234@nextgen.uoyzl6y.mongodb.net/student?retryWrites=true&w=majority"
-  )
+  .connect(mongodbUrl)
   .then(() => console.log("It is running"))
   .catch((err) => console.log(err));
 
