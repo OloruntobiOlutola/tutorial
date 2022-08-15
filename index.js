@@ -20,9 +20,9 @@ mongoose
   .catch((err) => console.log(err));
 
 // app.METHOD(PATH, HANDLER)
+// err, req, res, next
 app.get("/:id", async (req, res) => {
   try {
-    console.log(req.params.id);
     const student = await Student.findById(req.params.id);
     res.status(200).json({
       status: "success",
@@ -36,13 +36,30 @@ app.get("/:id", async (req, res) => {
       message: err,
     });
   }
-});
+})
 
+app.delete('/:id', async (req, res) => {
+  try {
+    await Student.findByIdAndDelete(req.params.id)
+  res.status(204).json({
+    status: 'success',
+    data: null
+  })  
+  } catch (error) {
+    res.status(400).json({
+      status: "fail",
+      message: error
+  })
+  }  
+})
+
+// Get All
 app.get("/", async (req, res) => {
   try {
     const student = await Student.find();
     res.status(200).json({
       status: "success",
+      results: student.length,
       data: {
         student,
       },
@@ -77,6 +94,6 @@ app.post("/", async (req, res) => {
   }
 });
 
-app.listen(5000, () => {
+app.listen(process.env.PORT, () => {
   console.log("It is already running");
 });
